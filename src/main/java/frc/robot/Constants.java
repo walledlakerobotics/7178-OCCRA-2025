@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import com.revrobotics.spark.SparkLowLevel;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import edu.wpi.first.math.geometry.Translation2d;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -16,4 +21,36 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class MecanumDriveConstants {
+    public static Translation2d kFrontLeftTranslation2d = new Translation2d();
+    public static Translation2d kFrontRightTranslation2d = new Translation2d();
+    public static Translation2d kBackLeftTranslation2d = new Translation2d();
+    public static Translation2d kBackRightTranslation2d = new Translation2d();
+
+    public static int kFrontLeftSparkID = 1;
+    public static int kFrontRightSparkID = 2;
+    public static int kBackLeftSparkID = 3;
+    public static int kBackRightSparkID = 4;
+
+    public static double kWheelBaseLength = 1;
+    public static double kTrackWidth = 1;
+
+    public static boolean kRightMotorsInverted = false;
+    public static boolean kLeftMotorsInverted = false;
+
+    public static int kKVConstant = 473;
+
+    public static double kPIDp = 1;
+    public static double kPIDi = 0;
+    public static double kPIDd = 0;
+
+    public static double kPosConvFactor = 1;
+    public static double kVelConvFactor = kPosConvFactor / 60;
+
+    public static double kMaxMperS = 5;
+    public static int kSmartCurrentLimit = 30;
+      
+  }
+
 }
