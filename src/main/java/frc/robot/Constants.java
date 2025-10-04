@@ -33,8 +33,8 @@ public final class Constants {
     public static int kBackLeftSparkID = 3;
     public static int kBackRightSparkID = 4;
 
-    public static double kWheelBaseLength = 1;
-    public static double kTrackWidth = 1;
+    public static double kWheelBaseLength = 0.508;
+    public static double kTrackWidth = 0.5842;
 
     public static boolean kRightMotorsInverted = false;
     public static boolean kLeftMotorsInverted = false;
@@ -45,7 +45,7 @@ public final class Constants {
     public static double kPIDi = 0;
     public static double kPIDd = 0;
 
-    public static double kPosConvFactor = 1;
+    public static double kPosConvFactor = (0.1524 * Math.PI) / 12.75;
     public static double kVelConvFactor = kPosConvFactor / 60;
 
     public static double kMaxMperS = 5;
