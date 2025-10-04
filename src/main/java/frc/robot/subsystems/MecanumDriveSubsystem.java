@@ -5,17 +5,12 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Translation2d;
-
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
-
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import frc.robot.Constants.MecanumDriveConstants;
-
 import java.util.function.DoubleSupplier;
-
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel;
@@ -24,6 +19,8 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
 
 public class MecanumDriveSubsystem extends SubsystemBase {
 
@@ -32,6 +29,8 @@ public class MecanumDriveSubsystem extends SubsystemBase {
   SparkMax m_BackLeft = new SparkMax(MecanumDriveConstants.kBackLeftSparkID, SparkLowLevel.MotorType.kBrushless);
   SparkMax m_BackRight = new SparkMax(MecanumDriveConstants.kBackRightSparkID, SparkLowLevel.MotorType.kBrushless);
   MecanumDrive m_Drive;
+
+  AHRS m_Gyro = new AHRS(NavXComType.kMXP_SPI);
   
   Translation2d m_FrontLeftTranslation2d = null;
   Translation2d m_FrontRightTranslation2d = null;
