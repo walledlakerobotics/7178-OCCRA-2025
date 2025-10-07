@@ -3,6 +3,11 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.controllers.PathFollowingController;
+
 import edu.wpi.first.math.geometry.Translation2d;
 
 /**
@@ -19,34 +24,49 @@ public final class Constants {
   }
 
   public static class MecanumDriveConstants {
-    public static Translation2d kFrontLeftTranslation2d = new Translation2d();
-    public static Translation2d kFrontRightTranslation2d = new Translation2d();
-    public static Translation2d kBackLeftTranslation2d = new Translation2d();
-    public static Translation2d kBackRightTranslation2d = new Translation2d();
+    public static final Translation2d kFrontLeftTranslation2d = new Translation2d();
+    public static final Translation2d kFrontRightTranslation2d = new Translation2d();
+    public static final Translation2d kBackLeftTranslation2d = new Translation2d();
+    public static final Translation2d kBackRightTranslation2d = new Translation2d();
 
-    public static int kFrontLeftSparkID = 1;
-    public static int kFrontRightSparkID = 2;
-    public static int kBackLeftSparkID = 3;
-    public static int kBackRightSparkID = 4;
+    public static final int kFrontLeftSparkID = 1;
+    public static final int kFrontRightSparkID = 2;
+    public static final int kBackLeftSparkID = 3;
+    public static final int kBackRightSparkID = 4;
 
-    public static double kWheelBaseLength = 0.508;
-    public static double kTrackWidth = 0.5842;
+    public static final double kWheelBaseLength = 0.508;
+    public static final double kTrackWidth = 0.5842;
 
-    public static boolean kRightMotorsInverted = false;
-    public static boolean kLeftMotorsInverted = false;
+    public static final boolean kRightMotorsInverted = false;
+    public static final boolean kLeftMotorsInverted = false;
 
-    public static int kKVConstant = 473;
+    public static final int kKVConstant = 473;
 
-    public static double kPIDp = 1;
-    public static double kPIDi = 0;
-    public static double kPIDd = 0;
+    public static final double kPIDp = 1;
+    public static final double kPIDi = 0;
+    public static final double kPIDd = 0;
 
-    public static double kPosConvFactor = (0.1524 * Math.PI) / 12.75;
-    public static double kVelConvFactor = kPosConvFactor / 60;
+    public static final double kPosConvFactor = (0.1524 * Math.PI) / 12.75;
+    public static final double kVelConvFactor = kPosConvFactor / 60;
 
-    public static double kMaxMperS = 5;
-    public static int kSmartCurrentLimit = 30;
+    public static final double kMaxMperS = 5;
+    public static final int kSmartCurrentLimit = 30;
       
+  }
+
+  public static class AutonConstants {
+    public static final PIDConstants kPIDConstantsTranslation =  new PIDConstants(1,0,0);
+    public static final PIDConstants kPIDConstantsRotation =  new PIDConstants(1,0,0);
+    public static final PathFollowingController kPathFollowingController = new PPHolonomicDriveController(kPIDConstantsTranslation, kPIDConstantsRotation);
+    public static final RobotConfig kRobotConfig;
+
+    static {
+      try {
+        kRobotConfig = RobotConfig.fromGUISettings();
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 
 }

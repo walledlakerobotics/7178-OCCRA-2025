@@ -4,13 +4,22 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
+import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
+import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
+import edu.wpi.first.math.kinematics.MecanumDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.AutonConstants;
 import frc.robot.Constants.MecanumDriveConstants;
+
 import java.util.function.DoubleSupplier;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel;
@@ -24,33 +33,56 @@ import com.studica.frc.AHRS.NavXComType;
 
 public class MecanumDriveSubsystem extends SubsystemBase {
 
-  SparkMax m_FrontLeft = new SparkMax(MecanumDriveConstants.kFrontLeftSparkID, SparkLowLevel.MotorType.kBrushless);
-  SparkMax m_FrontRight = new SparkMax(MecanumDriveConstants.kFrontRightSparkID, SparkLowLevel.MotorType.kBrushless);
-  SparkMax m_BackLeft = new SparkMax(MecanumDriveConstants.kBackLeftSparkID, SparkLowLevel.MotorType.kBrushless);
-  SparkMax m_BackRight = new SparkMax(MecanumDriveConstants.kBackRightSparkID, SparkLowLevel.MotorType.kBrushless);
-  MecanumDrive m_Drive;
+  final SparkMax m_FrontLeft = new SparkMax(MecanumDriveConstants.kFrontLeftSparkID,
+      SparkLowLevel.MotorType.kBrushless);
+  final SparkMax m_FrontRight = new SparkMax(MecanumDriveConstants.kFrontRightSparkID,
+      SparkLowLevel.MotorType.kBrushless);
+  final SparkMax m_BackLeft = new SparkMax(MecanumDriveConstants.kBackLeftSparkID, SparkLowLevel.MotorType.kBrushless);
+  final SparkMax m_BackRight = new SparkMax(MecanumDriveConstants.kBackRightSparkID,
+      SparkLowLevel.MotorType.kBrushless);
+  final MecanumDrive m_Drive;
 
-  AHRS m_Gyro = new AHRS(NavXComType.kMXP_SPI);
-  
-  Translation2d m_FrontLeftTranslation2d = null;
-  Translation2d m_FrontRightTranslation2d = null;
-  Translation2d m_BackLeftTranslation2d = null;
-  Translation2d m_BackRightTranslation2d = null;
+  final AHRS m_Gyro = new AHRS(NavXComType.kMXP_SPI);
 
-  RelativeEncoder m_FrontLeftEncoder;
-  RelativeEncoder m_FrontRightEncoder;
-  RelativeEncoder m_BackLeftEncoder;
-  RelativeEncoder m_BackRightEncoder;
+  final Translation2d m_FrontLeftTranslation2d = null;
+  final Translation2d m_FrontRightTranslation2d = null;
+  final Translation2d m_BackLeftTranslation2d = null;
+  final Translation2d m_BackRightTranslation2d = null;
 
-  SparkClosedLoopController m_FrontLeftClosedLoop;
-  SparkClosedLoopController m_FrontRightClosedLoop;
-  SparkClosedLoopController m_BackLeftClosedLoop;
-  SparkClosedLoopController m_BackRightClosedLoop;
+  final RelativeEncoder m_FrontLeftEncoder;
+  final RelativeEncoder m_FrontRightEncoder;
+  final RelativeEncoder m_BackLeftEncoder;
+  final RelativeEncoder m_BackRightEncoder;
 
+  final SparkClosedLoopController m_FrontLeftClosedLoop;
+  final SparkClosedLoopController m_FrontRightClosedLoop;
+  final SparkClosedLoopController m_BackLeftClosedLoop;
+  final SparkClosedLoopController m_BackRightClosedLoop;
+
+  final MecanumDriveOdometry m_Odometry;
 
   MecanumDriveKinematics m_Kinematics = new MecanumDriveKinematics(
-      m_FrontRightTranslation2d, m_FrontLeftTranslation2d, m_BackRightTranslation2d, m_BackLeftTranslation2d
-      );
+      m_FrontRightTranslation2d, m_FrontLeftTranslation2d, m_BackRightTranslation2d, m_BackLeftTranslation2d);
+
+  public MecanumDriveWheelPositions getWheelPositions() {
+    return new MecanumDriveWheelPositions(
+        m_FrontLeftEncoder.getPosition(),
+        m_FrontRightEncoder.getPosition(),
+        m_BackLeftEncoder.getPosition(),
+        m_BackRightEncoder.getPosition());
+  }
+
+  public MecanumDriveWheelSpeeds getWheelSpeeds() {
+    return new MecanumDriveWheelSpeeds(
+        m_FrontLeftEncoder.getVelocity(),
+        m_FrontRightEncoder.getVelocity(),
+        m_BackLeftEncoder.getVelocity(),
+        m_BackRightEncoder.getVelocity());
+  }
+
+  public ChassisSpeeds getChassisSpeeds() {
+    return m_Kinematics.toChassisSpeeds(getWheelSpeeds());
+  }
 
   public MecanumDriveSubsystem() {
 
@@ -94,14 +126,36 @@ public class MecanumDriveSubsystem extends SubsystemBase {
           speed -> m_BackRightClosedLoop.setReference(speed, ControlType.kVelocity));
 
       m_Drive.setMaxOutput(MecanumDriveConstants.kMaxMperS);
-    
-  }    
 
-  public void drive(double xSpeed, double ySpeed, double turnSpeed){
+      m_Odometry = new MecanumDriveOdometry(m_Kinematics, m_Gyro.getRotation2d(), getWheelPositions());
+
+      
+      AutoBuilder.configure(
+          m_Odometry::getPoseMeters, 
+          this::resetOdometry, 
+          this::getChassisSpeeds, 
+          this::driveRobotRelative, 
+          AutonConstants.kPathFollowingController, 
+          AutonConstants.kRobotConfig,
+          () -> false,
+          this);
+    
+  }
+
+  public void driveRobotRelative(ChassisSpeeds Speeds) {
+    MecanumDriveWheelSpeeds wheelSpeeds = m_Kinematics.toWheelSpeeds(Speeds);
+    m_FrontLeftClosedLoop.setReference(wheelSpeeds.frontLeftMetersPerSecond, ControlType.kVelocity);
+    m_BackLeftClosedLoop.setReference(wheelSpeeds.rearLeftMetersPerSecond, ControlType.kVelocity);
+    m_FrontRightClosedLoop.setReference(wheelSpeeds.frontRightMetersPerSecond, ControlType.kVelocity);
+    m_BackRightClosedLoop.setReference(wheelSpeeds.rearRightMetersPerSecond, ControlType.kVelocity);
+  }
+
+  public void drive(double xSpeed, double ySpeed, double turnSpeed) {
     m_Drive.driveCartesian(xSpeed, ySpeed, turnSpeed);
   }
 
-  public Command mecanumDrive(DoubleSupplier xSpeedSupplier, DoubleSupplier ySpeedSupplier, DoubleSupplier rotationSpeedSupplier) {
+  public Command mecanumDrive(DoubleSupplier xSpeedSupplier, DoubleSupplier ySpeedSupplier,
+      DoubleSupplier rotationSpeedSupplier) {
     return run(() -> {
       double xSpeed = xSpeedSupplier.getAsDouble();
       double ySpeed = ySpeedSupplier.getAsDouble();
@@ -110,5 +164,14 @@ public class MecanumDriveSubsystem extends SubsystemBase {
       drive(xSpeed, ySpeed, zRotation);
 
     });
+  }
+
+  @Override
+  public void periodic() {
+    m_Odometry.update(m_Gyro.getRotation2d(), getWheelPositions());
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    m_Odometry.resetPosition(m_Gyro.getRotation2d(), getWheelPositions(), pose);
   }
 }
