@@ -10,6 +10,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.FourbarSubsystem;
 import frc.robot.subsystems.MecanumDriveSubsystem;
+import frc.robot.subsystems.PusherSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.StadiaController.Button;
@@ -30,6 +31,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final MecanumDriveSubsystem m_MecanumSubsystem = new MecanumDriveSubsystem();
   private final FourbarSubsystem m_FourbarSubsystem = new FourbarSubsystem();
+  private final PusherSubsystem m_PusherSubsystem = new PusherSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -67,6 +69,8 @@ public class RobotContainer {
     );
     */
     m_driverController.a().onTrue(new InstantCommand(() -> m_FourbarSubsystem.toggleSolenid()));
+
+    m_driverController.x().onTrue(new InstantCommand(() -> m_PusherSubsystem.dejectBlock()));
   }
 
   /**
