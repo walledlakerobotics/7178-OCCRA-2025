@@ -52,7 +52,13 @@ public class RobotContainer {
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    m_MecanumSubsystem.drive(m_driverController.getLeftX(), m_driverController.getLeftY(), m_driverController.getRightX());
+    m_MecanumSubsystem.setDefaultCommand(
+        m_MecanumSubsystem.mecanumDrive(
+            m_driverController::getLeftY, 
+            m_driverController::getLeftX, 
+            m_driverController::getRightX
+        )
+    );
   }
 
   /**

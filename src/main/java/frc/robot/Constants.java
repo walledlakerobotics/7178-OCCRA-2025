@@ -34,6 +34,10 @@ public final class Constants {
     public static final int kBackLeftSparkID = 3;
     public static final int kBackRightSparkID = 4;
 
+    public static final double kForwardMaxSpeed = 5.6;
+    public static final double kStrafeMaxSpeed = 5.6;
+    public static final double kTurnMaxSpeed = 7.0;
+
     public static final double kWheelBaseLength = 0.508;
     public static final double kTrackWidth = 0.5842;
 
@@ -52,6 +56,17 @@ public final class Constants {
     public static final double kMaxMperS = 5;
     public static final int kSmartCurrentLimit = 30;
       
+  }
+
+  public static class ElevatorConstants {
+    public static final int kElevatorSparkID = 5;
+    public static final boolean kElevatorMotorInverted = false;
+
+    public static final double kPIDp = 1;
+    public static final double kPIDi = 0;
+    public static final double kPIDd = 0;
+
+    public static final double kMaxHeightPosition = 10;
   }
 
   public static class AutonConstants {

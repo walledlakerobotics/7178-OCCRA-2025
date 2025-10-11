@@ -16,9 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AutonConstants;
 import frc.robot.Constants.MecanumDriveConstants;
-
 import java.util.function.DoubleSupplier;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -28,6 +26,7 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
@@ -44,10 +43,10 @@ public class MecanumDriveSubsystem extends SubsystemBase {
 
   final AHRS m_Gyro = new AHRS(NavXComType.kMXP_SPI);
 
-  final Translation2d m_FrontLeftTranslation2d = null;
-  final Translation2d m_FrontRightTranslation2d = null;
-  final Translation2d m_BackLeftTranslation2d = null;
-  final Translation2d m_BackRightTranslation2d = null;
+  final Translation2d m_FrontLeftTranslation2d = new Translation2d(MecanumDriveConstants.kWheelBaseLength / 2, MecanumDriveConstants.kTrackWidth / 2);
+  final Translation2d m_FrontRightTranslation2d = new Translation2d(MecanumDriveConstants.kWheelBaseLength / 2, -MecanumDriveConstants.kTrackWidth / 2) ;
+  final Translation2d m_BackLeftTranslation2d = new Translation2d(-MecanumDriveConstants.kWheelBaseLength / 2, MecanumDriveConstants.kTrackWidth / 2);
+  final Translation2d m_BackRightTranslation2d = new Translation2d(-MecanumDriveConstants.kWheelBaseLength / 2, -MecanumDriveConstants.kTrackWidth / 2);
 
   final RelativeEncoder m_FrontLeftEncoder;
   final RelativeEncoder m_FrontRightEncoder;
@@ -89,7 +88,7 @@ public class MecanumDriveSubsystem extends SubsystemBase {
     SparkMaxConfig config = new SparkMaxConfig();
       config
             .smartCurrentLimit(MecanumDriveConstants.kSmartCurrentLimit)
-            .idleMode(null);
+            .idleMode(IdleMode.kBrake);
 
       config.closedLoop
             .pid(MecanumDriveConstants.kPIDp, MecanumDriveConstants.kPIDi, MecanumDriveConstants.kPIDd)
@@ -123,12 +122,12 @@ public class MecanumDriveSubsystem extends SubsystemBase {
           speed -> m_FrontLeftClosedLoop.setReference(speed, ControlType.kVelocity),
           speed -> m_BackLeftClosedLoop.setReference(speed, ControlType.kVelocity),
           speed -> m_FrontRightClosedLoop.setReference(speed, ControlType.kVelocity),
-          speed -> m_BackRightClosedLoop.setReference(speed, ControlType.kVelocity));
+          speed -> m_BackRightClosedLoop.setReference(speed, ControlType.kVelocity)
+      );
 
       m_Drive.setMaxOutput(MecanumDriveConstants.kMaxMperS);
 
       m_Odometry = new MecanumDriveOdometry(m_Kinematics, m_Gyro.getRotation2d(), getWheelPositions());
-
       
       AutoBuilder.configure(
           m_Odometry::getPoseMeters, 
@@ -139,7 +138,6 @@ public class MecanumDriveSubsystem extends SubsystemBase {
           AutonConstants.kRobotConfig,
           () -> false,
           this);
-    
   }
 
   public void driveRobotRelative(ChassisSpeeds Speeds) {
@@ -151,7 +149,12 @@ public class MecanumDriveSubsystem extends SubsystemBase {
   }
 
   public void drive(double xSpeed, double ySpeed, double turnSpeed) {
-    m_Drive.driveCartesian(xSpeed, ySpeed, turnSpeed);
+    ChassisSpeeds C = new ChassisSpeeds(
+        xSpeed * MecanumDriveConstants.kForwardMaxSpeed, 
+        ySpeed*MecanumDriveConstants.kStrafeMaxSpeed, 
+        turnSpeed * MecanumDriveConstants.kTurnMaxSpeed
+    );
+    driveRobotRelative(C);
   }
 
   public Command mecanumDrive(DoubleSupplier xSpeedSupplier, DoubleSupplier ySpeedSupplier,
@@ -161,7 +164,7 @@ public class MecanumDriveSubsystem extends SubsystemBase {
       double ySpeed = ySpeedSupplier.getAsDouble();
       double zRotation = rotationSpeedSupplier.getAsDouble();
 
-      drive(xSpeed, ySpeed, zRotation);
+      drive(-xSpeed, -ySpeed, -zRotation);
 
     });
   }
