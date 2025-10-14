@@ -4,13 +4,14 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
@@ -39,16 +40,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   }
 
-  public Command ElevatorUp() {
+  public Command ElevatorPosition(double position) {
     return runOnce(
         () -> {
-            m_ElevatorClosedLoop.setReference(ElevatorConstants.kMaxHeightPosition, ControlType.kPosition);
-        });
-  }
-  public Command ElevatorDown() {
-    return runOnce(
-        () -> {
-            m_ElevatorClosedLoop.setReference(0.0, ControlType.kPosition);
+            m_ElevatorClosedLoop.setReference(position, ControlType.kPosition);
         });
   }
 }

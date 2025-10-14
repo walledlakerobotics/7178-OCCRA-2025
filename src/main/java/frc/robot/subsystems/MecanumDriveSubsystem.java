@@ -4,6 +4,21 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -16,19 +31,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AutonConstants;
 import frc.robot.Constants.MecanumDriveConstants;
-import java.util.function.DoubleSupplier;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkLowLevel;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.studica.frc.AHRS;
-import com.studica.frc.AHRS.NavXComType;
 
 public class MecanumDriveSubsystem extends SubsystemBase {
 
@@ -151,7 +153,7 @@ public class MecanumDriveSubsystem extends SubsystemBase {
   public void drive(double xSpeed, double ySpeed, double turnSpeed) {
     ChassisSpeeds C = new ChassisSpeeds(
         xSpeed * MecanumDriveConstants.kForwardMaxSpeed, 
-        ySpeed*MecanumDriveConstants.kStrafeMaxSpeed, 
+        ySpeed * MecanumDriveConstants.kStrafeMaxSpeed, 
         turnSpeed * MecanumDriveConstants.kTurnMaxSpeed
     );
     driveRobotRelative(C);

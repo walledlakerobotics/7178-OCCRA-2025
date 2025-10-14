@@ -3,12 +3,11 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import com.pathplanner.lib.config.PIDConstants;
-import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.controllers.PathFollowingController;
-
 import edu.wpi.first.math.geometry.Translation2d;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -65,8 +64,6 @@ public final class Constants {
     public static final double kPIDp = 1;
     public static final double kPIDi = 0;
     public static final double kPIDd = 0;
-
-    public static final double kMaxHeightPosition = 10;
   }
 
   public static class AutonConstants {
