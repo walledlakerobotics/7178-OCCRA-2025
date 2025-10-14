@@ -11,7 +11,9 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.FourbarSubsystem;
 import frc.robot.subsystems.MecanumDriveSubsystem;
+import frc.robot.subsystems.PusherSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,6 +25,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final MecanumDriveSubsystem m_MecanumSubsystem = new MecanumDriveSubsystem();
+  private final FourbarSubsystem m_FourbarSubsystem = new FourbarSubsystem();
+  private final PusherSubsystem m_PusherSubsystem = new PusherSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -51,6 +55,17 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    m_MecanumSubsystem.drive(m_driverController.getLeftX(), m_driverController.getLeftY(), m_driverController.getRightX());
+    /*
+    new JoystickButton(m_driverController, Button.kA.value)
+    .onTrue(
+      new InstantCommand(() -> m_FourbarSubsystem.setSolenoid(Value.kForward))
+    );
+    */
+    m_driverController.a().onTrue(new InstantCommand(() -> m_FourbarSubsystem.toggleSolenid()));
+
+    m_driverController.x().onTrue(new InstantCommand(() -> m_PusherSubsystem.ejectBlock()));
 
     m_MecanumSubsystem.setDefaultCommand(
         m_MecanumSubsystem.mecanumDrive(
