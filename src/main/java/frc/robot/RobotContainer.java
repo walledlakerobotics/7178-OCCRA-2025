@@ -70,7 +70,15 @@ public class RobotContainer {
     */
     m_driverController.a().onTrue(new InstantCommand(() -> m_FourbarSubsystem.toggleSolenid()));
 
-    m_driverController.x().onTrue(new InstantCommand(() -> m_PusherSubsystem.dejectBlock()));
+    m_driverController.x().onTrue(new InstantCommand(() -> m_PusherSubsystem.ejectBlock()));
+
+    m_MecanumSubsystem.setDefaultCommand(
+        m_MecanumSubsystem.mecanumDrive(
+            m_driverController::getLeftY, 
+            m_driverController::getLeftX, 
+            m_driverController::getRightX
+        )
+    );
   }
 
   /**
