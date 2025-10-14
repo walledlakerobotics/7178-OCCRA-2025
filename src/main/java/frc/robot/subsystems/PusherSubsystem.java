@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class PusherSubsystem {
     private final DoubleSolenoid m_doubleSolenoid;
@@ -21,7 +20,6 @@ public class PusherSubsystem {
     public void ejectBlock() {
         setSolenoid(DoubleSolenoid.Value.kForward);
         try{
-            Thread.sleep(500);
             Thread.sleep(300);
         }catch(InterruptedException e) {
             /* Do Nothing */
