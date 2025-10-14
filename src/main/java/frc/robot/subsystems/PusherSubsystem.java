@@ -18,8 +18,6 @@ public class PusherSubsystem {
         m_doubleSolenoid.set(setValue);
     }
 
-    public void dejectBlock() {
-        setSolenoid(Value.kForward);
     public void ejectBlock() {
         setSolenoid(DoubleSolenoid.Value.kForward);
         try{
@@ -28,7 +26,6 @@ public class PusherSubsystem {
         }catch(InterruptedException e) {
             /* Do Nothing */
         }
-        setSolenoid(Value.kReverse);
         setSolenoid(DoubleSolenoid.Value.kReverse);
     }
 }
