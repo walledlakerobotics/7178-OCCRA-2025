@@ -14,6 +14,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.FourbarSubsystem;
 import frc.robot.subsystems.MecanumDriveSubsystem;
 import frc.robot.subsystems.PusherSubsystem;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
