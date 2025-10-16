@@ -66,6 +66,7 @@ public final class Constants {
     public static final double kPIDd = 0;
 
     public static final double kElevatorVelocityFactor = 1;
+    public static final double kElevatorManualControlDeadband = 0.01;
   }
 
   public static class AutonConstants {

@@ -14,6 +14,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
@@ -42,18 +43,20 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   }
 
-  public Command ElevatorSetPosition(double position) {
+  public Command elevatorSetPosition(double position) {
     return runOnce(
         () -> {
             m_ElevatorClosedLoop.setReference(position, ControlType.kPosition);
         });
   }
 
-  public Command ElevatorManualPosition(DoubleSupplier VelocitySupplier) {
+  public Command elevatorManualPosition(DoubleSupplier velocitySupplier) {
     return run(
         () -> {
-            double m_velocity = VelocitySupplier.getAsDouble() * ElevatorConstants.kElevatorVelocityFactor;
-            m_ElevatorClosedLoop.setReference(m_velocity, ControlType.kVelocity);
+            double velocity = MathUtil.applyDeadband(
+                velocitySupplier.getAsDouble() , ElevatorConstants.kElevatorManualControlDeadband) * 
+                ElevatorConstants.kElevatorVelocityFactor;
+            m_ElevatorClosedLoop.setReference(velocity, ControlType.kVelocity);
         });
   }
 
