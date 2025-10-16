@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -40,10 +42,21 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   }
 
-  public Command ElevatorPosition(double position) {
+  public Command ElevatorSetPosition(double position) {
     return runOnce(
         () -> {
             m_ElevatorClosedLoop.setReference(position, ControlType.kPosition);
         });
   }
+
+  public Command ElevatorManualPosition(DoubleSupplier VelocitySupplier) {
+    return run(
+        () -> {
+            double m_velocity = VelocitySupplier.getAsDouble() * ElevatorConstants.kElevatorVelocityFactor;
+            m_ElevatorClosedLoop.setReference(m_velocity, ControlType.kVelocity);
+        });
+  }
+
 }
+
+

@@ -64,6 +64,8 @@ public final class Constants {
     public static final double kPIDp = 1;
     public static final double kPIDi = 0;
     public static final double kPIDd = 0;
+
+    public static final double kElevatorVelocityFactor = 1;
   }
 
   public static class AutonConstants {

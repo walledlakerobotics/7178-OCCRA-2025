@@ -46,7 +46,7 @@ public class MecanumDriveSubsystem extends SubsystemBase {
   final AHRS m_Gyro = new AHRS(NavXComType.kMXP_SPI);
 
   final Translation2d m_FrontLeftTranslation2d = new Translation2d(MecanumDriveConstants.kWheelBaseLength / 2, MecanumDriveConstants.kTrackWidth / 2);
-  final Translation2d m_FrontRightTranslation2d = new Translation2d(MecanumDriveConstants.kWheelBaseLength / 2, -MecanumDriveConstants.kTrackWidth / 2) ;
+  final Translation2d m_FrontRightTranslation2d = new Translation2d(MecanumDriveConstants.kWheelBaseLength / 2, -MecanumDriveConstants.kTrackWidth / 2);
   final Translation2d m_BackLeftTranslation2d = new Translation2d(-MecanumDriveConstants.kWheelBaseLength / 2, MecanumDriveConstants.kTrackWidth / 2);
   final Translation2d m_BackRightTranslation2d = new Translation2d(-MecanumDriveConstants.kWheelBaseLength / 2, -MecanumDriveConstants.kTrackWidth / 2);
 
