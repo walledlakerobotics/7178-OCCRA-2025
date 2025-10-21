@@ -49,24 +49,15 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-
-    m_MecanumSubsystem.drive(m_driverController.getLeftX(), m_driverController.getLeftY(), m_driverController.getRightX());
     /*
     new JoystickButton(m_driverController, Button.kA.value)
     .onTrue(
       new InstantCommand(() -> m_FourbarSubsystem.setSolenoid(Value.kForward))
     );
     */
-    m_driverController.a().onTrue(new InstantCommand(() -> m_FourbarSubsystem.toggleSolenid()));
+    // m_driverController.a().onTrue(new InstantCommand(() -> m_FourbarSubsystem.toggleSolenid()));
 
-    m_driverController.x().onTrue(new InstantCommand(() -> m_PusherSubsystem.ejectBlock()));
+    // m_driverController.x().onTrue(new InstantCommand(() -> m_PusherSubsystem.ejectBlock()));
 
     m_MecanumSubsystem.setDefaultCommand(
         m_MecanumSubsystem.mecanumDrive(

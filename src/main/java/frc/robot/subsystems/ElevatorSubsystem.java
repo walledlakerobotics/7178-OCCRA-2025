@@ -54,8 +54,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     return run(
         () -> {
             double velocity = MathUtil.applyDeadband(
-                velocitySupplier.getAsDouble() , ElevatorConstants.kElevatorManualControlDeadband) * 
-                ElevatorConstants.kElevatorVelocityFactor;
+                velocitySupplier.getAsDouble() , ElevatorConstants.kElevatorManualControlDeadband) 
+                * ElevatorConstants.kElevatorVelocityFactor;
             m_ElevatorClosedLoop.setReference(velocity, ControlType.kVelocity);
         });
   }

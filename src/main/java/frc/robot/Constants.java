@@ -28,10 +28,10 @@ public final class Constants {
     public static final Translation2d kBackLeftTranslation2d = new Translation2d();
     public static final Translation2d kBackRightTranslation2d = new Translation2d();
 
-    public static final int kFrontLeftSparkID = 1;
-    public static final int kFrontRightSparkID = 2;
-    public static final int kBackLeftSparkID = 3;
-    public static final int kBackRightSparkID = 4;
+    public static final int kFrontLeftSparkID = 2;
+    public static final int kFrontRightSparkID = 4;
+    public static final int kBackLeftSparkID = 8;
+    public static final int kBackRightSparkID = 6;
 
     public static final double kForwardMaxSpeed = 5.6;
     public static final double kStrafeMaxSpeed = 5.6;
@@ -45,9 +45,9 @@ public final class Constants {
 
     public static final int kKVConstant = 473;
 
-    public static final double kPIDp = 1;
-    public static final double kPIDi = 0;
-    public static final double kPIDd = 0;
+    public static final double kPIDp = 0.10;
+    public static final double kPIDi = 0.00;
+    public static final double kPIDd = 0.00;
 
     public static final double kPosConvFactor = (0.1524 * Math.PI) / 12.75;
     public static final double kVelConvFactor = kPosConvFactor / 60;
@@ -73,11 +73,11 @@ public final class Constants {
     public static final PIDConstants kPIDConstantsTranslation =  new PIDConstants(1,0,0);
     public static final PIDConstants kPIDConstantsRotation =  new PIDConstants(1,0,0);
     public static final PathFollowingController kPathFollowingController = new PPHolonomicDriveController(kPIDConstantsTranslation, kPIDConstantsRotation);
-    public static final RobotConfig kRobotConfig;
+    //public static final RobotConfig kRobotConfig;
 
     static {
       try {
-        kRobotConfig = RobotConfig.fromGUISettings();
+        //kRobotConfig = RobotConfig.fromGUISettings();
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
