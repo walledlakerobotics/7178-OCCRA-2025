@@ -27,4 +27,4 @@ public class PusherSubsystem {
         }
         setSolenoid(DoubleSolenoid.Value.kReverse);
     }
-}
+};
