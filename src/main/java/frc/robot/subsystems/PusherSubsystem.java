@@ -17,27 +17,13 @@ public class PusherSubsystem {
     //     m_doubleSolenoid.set(setValue);
     // }
 
-<<<<<<< HEAD
-    // public void ejectBlock() {
-    //     setSolenoid(DoubleSolenoid.Value.kForward);
-    //     try{
-    //         Thread.sleep(500);
-    //         Thread.sleep(300);
-    //     }catch(InterruptedException e) {
-    //         /* Do Nothing */
-    //     }
-    //     setSolenoid(DoubleSolenoid.Value.kReverse);
-    // }
-}
-=======
-    public void ejectBlock() {
-        setSolenoid(DoubleSolenoid.Value.kForward);
-        try{
-            Thread.sleep(300);
-        }catch(InterruptedException e) {
-            /* Do Nothing */
-        }
-        setSolenoid(DoubleSolenoid.Value.kReverse);
-    }
+    //public void ejectBlock() {
+    //    setSolenoid(DoubleSolenoid.Value.kForward);
+    //    try{
+    //        Thread.sleep(300);
+    //    }catch(InterruptedException e) {
+    //        /* Do Nothing */
+    //    }
+    //    setSolenoid(DoubleSolenoid.Value.kReverse);
+    //}
 };
->>>>>>> 50f502011cfa9206d363a42b0bbb26659f80b32b

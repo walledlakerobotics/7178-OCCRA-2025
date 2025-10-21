@@ -73,11 +73,11 @@ public final class Constants {
     public static final PIDConstants kPIDConstantsTranslation =  new PIDConstants(1,0,0);
     public static final PIDConstants kPIDConstantsRotation =  new PIDConstants(1,0,0);
     public static final PathFollowingController kPathFollowingController = new PPHolonomicDriveController(kPIDConstantsTranslation, kPIDConstantsRotation);
-    //public static final RobotConfig kRobotConfig;
+    public static final RobotConfig kRobotConfig;
 
     static {
       try {
-        //kRobotConfig = RobotConfig.fromGUISettings();
+        kRobotConfig = RobotConfig.fromGUISettings();
       } catch (Exception e) {
         throw new RuntimeException(e);
       }

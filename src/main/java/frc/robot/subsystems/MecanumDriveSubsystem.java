@@ -123,15 +123,15 @@ public class MecanumDriveSubsystem extends SubsystemBase {
 
       m_Odometry = new MecanumDriveOdometry(m_Kinematics, m_Gyro.getRotation2d(), getWheelPositions());
       
-      //AutoBuilder.configure(
-          //m_Odometry::getPoseMeters, 
-          //this::resetOdometry, 
-          //this::getChassisSpeeds, 
-          //this::driveRobotRelative, 
-          //AutonConstants.kPathFollowingController, 
-          //AutonConstants.kRobotConfig,
-          //() -> false,
-          //this);
+      AutoBuilder.configure(
+          m_Odometry::getPoseMeters, 
+          this::resetOdometry, 
+          this::getChassisSpeeds, 
+          this::driveRobotRelative, 
+          AutonConstants.kPathFollowingController, 
+          AutonConstants.kRobotConfig,
+          () -> false,
+          this);
   }
 
   public void driveRobotRelative(ChassisSpeeds Speeds) {
@@ -154,11 +154,11 @@ public class MecanumDriveSubsystem extends SubsystemBase {
   public Command mecanumDrive(DoubleSupplier xSpeedSupplier, DoubleSupplier ySpeedSupplier,
       DoubleSupplier rotationSpeedSupplier) {
     return run(() -> {
-      // double xSpeed = xSpeedSupplier.getAsDouble();
-      // double ySpeed = ySpeedSupplier.getAsDouble(); 
-      // double zRotation = rotationSpeedSupplier.getAsDouble();
+       double xSpeed = xSpeedSupplier.getAsDouble();
+       double ySpeed = ySpeedSupplier.getAsDouble(); 
+       double zRotation = rotationSpeedSupplier.getAsDouble();
 
-      // drive(-xSpeed, -ySpeed, -zRotation);
+       drive(-xSpeed, -ySpeed, -zRotation);
 
     m_FrontLeft.set(0.1);
     m_BackRight.set(0.1);
