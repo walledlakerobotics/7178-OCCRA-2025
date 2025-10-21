@@ -20,7 +20,6 @@ public class PusherSubsystem {
     public void ejectBlock() {
         setSolenoid(DoubleSolenoid.Value.kForward);
         try{
-            Thread.sleep(500);
             Thread.sleep(300);
         }catch(InterruptedException e) {
             /* Do Nothing */
