@@ -32,12 +32,16 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     SparkMaxConfig config = new SparkMaxConfig();
       config
-            .smartCurrentLimit(MecanumDriveConstants.kSmartCurrentLimit)
-            .idleMode(IdleMode.kBrake);
+          .smartCurrentLimit(MecanumDriveConstants.kSmartCurrentLimit)
+          .idleMode(IdleMode.kBrake);
 
       config.closedLoop
-            .pid(ElevatorConstants.kPIDp, ElevatorConstants.kPIDi, ElevatorConstants.kPIDd)
-            .velocityFF(1/MecanumDriveConstants.kKVConstant);
+          .pid(ElevatorConstants.kPIDp, ElevatorConstants.kPIDi, ElevatorConstants.kPIDd)
+          .velocityFF(1/MecanumDriveConstants.kKVConstant);
+
+      config.closedLoop.maxMotion
+          .maxVelocity(ElevatorConstants.kMaxVelocity)
+          .maxAcceleration(ElevatorConstants.kMaxAcceleration);
 
       config.inverted(ElevatorConstants.kElevatorMotorInverted);
 
@@ -46,7 +50,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   public Command elevatorSetPosition(double position) {
     return runOnce(
         () -> {
-            m_ElevatorClosedLoop.setReference(position, ControlType.kPosition);
+            m_ElevatorClosedLoop.setReference(position, ControlType.kMAXMotionPositionControl);
         });
   }
 
@@ -56,7 +60,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             double velocity = MathUtil.applyDeadband(
                 velocitySupplier.getAsDouble() , ElevatorConstants.kElevatorManualControlDeadband) 
                 * ElevatorConstants.kElevatorVelocityFactor;
-            m_ElevatorClosedLoop.setReference(velocity, ControlType.kVelocity);
+            m_ElevatorClosedLoop.setReference(velocity, ControlType.kMAXMotionVelocityControl);
         });
   }
 

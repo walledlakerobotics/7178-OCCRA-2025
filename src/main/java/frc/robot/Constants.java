@@ -65,6 +65,9 @@ public final class Constants {
     public static final double kPIDi = 0;
     public static final double kPIDd = 0;
 
+    public static final double kMaxVelocity = 2;
+    public static final double kMaxAcceleration = 2;
+
     public static final double kElevatorVelocityFactor = 1;
     public static final double kElevatorManualControlDeadband = 0.01;
   }
