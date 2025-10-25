@@ -158,10 +158,7 @@ public class MecanumDriveSubsystem extends SubsystemBase {
        double ySpeed = ySpeedSupplier.getAsDouble(); 
        double zRotation = rotationSpeedSupplier.getAsDouble();
 
-       drive(-xSpeed, -ySpeed, -zRotation);
-
-    m_FrontLeft.set(0.1);
-    m_BackRight.set(0.1);
+       drive(xSpeed, ySpeed, -zRotation);
 
     });
   }

@@ -35,17 +35,17 @@ public final class Constants {
 
     public static final double kForwardMaxSpeed = 5.6;
     public static final double kStrafeMaxSpeed = 5.6;
-    public static final double kTurnMaxSpeed = 7.0;
+    public static final double kTurnMaxSpeed = 30;
 
     public static final double kWheelBaseLength = 0.508;
     public static final double kTrackWidth = 0.5842;
 
     public static final boolean kRightMotorsInverted = false;
-    public static final boolean kLeftMotorsInverted = false;
+    public static final boolean kLeftMotorsInverted = true;
 
     public static final int kKVConstant = 473;
 
-    public static final double kPIDp = 0.10;
+    public static final double kPIDp = 0.05;
     public static final double kPIDi = 0.00;
     public static final double kPIDd = 0.00;
 
@@ -58,7 +58,7 @@ public final class Constants {
   }
 
   public static class ElevatorConstants {
-    public static final int kElevatorSparkID = 5;
+    public static final int kElevatorSparkID = 62;
     public static final boolean kElevatorMotorInverted = false;
 
     public static final double kPIDp = 1;
