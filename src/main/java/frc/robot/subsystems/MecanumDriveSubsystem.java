@@ -55,10 +55,22 @@ public class MecanumDriveSubsystem extends SubsystemBase {
   final AHRS m_Gyro = new AHRS(NavXComType.kMXP_SPI);
 
   //Translations from bot center of wheels
-  final Translation2d m_FrontLeftTranslation2d = new Translation2d(MecanumDriveConstants.kWheelBaseLength / 2, MecanumDriveConstants.kTrackWidth / 2);
-  final Translation2d m_FrontRightTranslation2d = new Translation2d(MecanumDriveConstants.kWheelBaseLength / 2, -MecanumDriveConstants.kTrackWidth / 2);
-  final Translation2d m_BackLeftTranslation2d = new Translation2d(-MecanumDriveConstants.kWheelBaseLength / 2, MecanumDriveConstants.kTrackWidth / 2);
-  final Translation2d m_BackRightTranslation2d = new Translation2d(-MecanumDriveConstants.kWheelBaseLength / 2, -MecanumDriveConstants.kTrackWidth / 2);
+  final Translation2d m_FrontLeftTranslation2d = new Translation2d(
+    MecanumDriveConstants.kWheelBaseLength / 2, 
+    MecanumDriveConstants.kTrackWidth / 2
+    );
+  final Translation2d m_FrontRightTranslation2d = new Translation2d(
+    MecanumDriveConstants.kWheelBaseLength / 2,
+    -MecanumDriveConstants.kTrackWidth / 2
+    );
+  final Translation2d m_BackLeftTranslation2d = new Translation2d(
+    -MecanumDriveConstants.kWheelBaseLength / 2, 
+    MecanumDriveConstants.kTrackWidth / 2
+    );
+  final Translation2d m_BackRightTranslation2d = new Translation2d(
+    -MecanumDriveConstants.kWheelBaseLength / 2, 
+    -MecanumDriveConstants.kTrackWidth / 2
+    );
 
   //Encoders
   final RelativeEncoder m_FrontLeftEncoder;
@@ -77,7 +89,11 @@ public class MecanumDriveSubsystem extends SubsystemBase {
 
   //Kinematics Object
   MecanumDriveKinematics m_Kinematics = new MecanumDriveKinematics(
-      m_FrontRightTranslation2d, m_FrontLeftTranslation2d, m_BackRightTranslation2d, m_BackLeftTranslation2d);
+      m_FrontRightTranslation2d, 
+      m_FrontLeftTranslation2d, 
+      m_BackRightTranslation2d, 
+      m_BackLeftTranslation2d
+      );
 
 
   public MecanumDriveWheelPositions getWheelPositions() {
