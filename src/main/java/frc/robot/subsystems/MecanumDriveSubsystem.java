@@ -33,36 +33,52 @@ import frc.robot.Constants.MecanumDriveConstants;
 
 public class MecanumDriveSubsystem extends SubsystemBase {
 
-  final SparkMax m_FrontLeft = new SparkMax(MecanumDriveConstants.kFrontLeftSparkID,
-      SparkLowLevel.MotorType.kBrushless);
-  final SparkMax m_FrontRight = new SparkMax(MecanumDriveConstants.kFrontRightSparkID,
-      SparkLowLevel.MotorType.kBrushless);
-  final SparkMax m_BackLeft = new SparkMax(MecanumDriveConstants.kBackLeftSparkID, 
-      SparkLowLevel.MotorType.kBrushless);
-  final SparkMax m_BackRight = new SparkMax(MecanumDriveConstants.kBackRightSparkID,
-      SparkLowLevel.MotorType.kBrushless);
+  //Drive Motors
+  final SparkMax m_FrontLeft = new SparkMax(
+      MecanumDriveConstants.kFrontLeftSparkID,
+      SparkLowLevel.MotorType.kBrushless
+      );
+  final SparkMax m_FrontRight = new SparkMax(
+      MecanumDriveConstants.kFrontRightSparkID,
+      SparkLowLevel.MotorType.kBrushless
+      );
+  final SparkMax m_BackLeft = new SparkMax(
+      MecanumDriveConstants.kBackLeftSparkID, 
+      SparkLowLevel.MotorType.kBrushless
+      );
+  final SparkMax m_BackRight = new SparkMax(
+    MecanumDriveConstants.kBackRightSparkID,
+    SparkLowLevel.MotorType.kBrushless
+    );
 
+  //Gyro For PathPlanner
   final AHRS m_Gyro = new AHRS(NavXComType.kMXP_SPI);
 
+  //Translations from bot center of wheels
   final Translation2d m_FrontLeftTranslation2d = new Translation2d(MecanumDriveConstants.kWheelBaseLength / 2, MecanumDriveConstants.kTrackWidth / 2);
   final Translation2d m_FrontRightTranslation2d = new Translation2d(MecanumDriveConstants.kWheelBaseLength / 2, -MecanumDriveConstants.kTrackWidth / 2);
   final Translation2d m_BackLeftTranslation2d = new Translation2d(-MecanumDriveConstants.kWheelBaseLength / 2, MecanumDriveConstants.kTrackWidth / 2);
   final Translation2d m_BackRightTranslation2d = new Translation2d(-MecanumDriveConstants.kWheelBaseLength / 2, -MecanumDriveConstants.kTrackWidth / 2);
 
+  //Encoders
   final RelativeEncoder m_FrontLeftEncoder;
   final RelativeEncoder m_FrontRightEncoder;
   final RelativeEncoder m_BackLeftEncoder;
   final RelativeEncoder m_BackRightEncoder;
 
+  //Closedloop Controllers of Drive Motors
   final SparkClosedLoopController m_FrontLeftClosedLoop;
   final SparkClosedLoopController m_FrontRightClosedLoop;
   final SparkClosedLoopController m_BackLeftClosedLoop;
   final SparkClosedLoopController m_BackRightClosedLoop;
 
+  //Odometry Object
   final MecanumDriveOdometry m_Odometry;
 
+  //Kinematics Object
   MecanumDriveKinematics m_Kinematics = new MecanumDriveKinematics(
       m_FrontRightTranslation2d, m_FrontLeftTranslation2d, m_BackRightTranslation2d, m_BackLeftTranslation2d);
+
 
   public MecanumDriveWheelPositions getWheelPositions() {
     return new MecanumDriveWheelPositions(
@@ -85,12 +101,11 @@ public class MecanumDriveSubsystem extends SubsystemBase {
   }
 
   public MecanumDriveSubsystem() {
-
+    
     SparkMaxConfig config = new SparkMaxConfig();
       config
             .smartCurrentLimit(MecanumDriveConstants.kSmartCurrentLimit)
             .idleMode(IdleMode.kBrake);
-
       config.closedLoop
             .pid(MecanumDriveConstants.kPIDp, MecanumDriveConstants.kPIDi, MecanumDriveConstants.kPIDd)
             .velocityFF(1/MecanumDriveConstants.kKVConstant);
