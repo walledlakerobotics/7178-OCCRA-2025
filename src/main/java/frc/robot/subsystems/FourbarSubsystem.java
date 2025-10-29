@@ -1,24 +1,25 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.PneumaticsConstants;
 
-public class FourbarSubsystem {
-     private final DoubleSolenoid m_doubleSolenoid;
-     private final Compressor m_compressor;
+public class FourbarSubsystem extends SubsystemBase{
+     private final Solenoid m_Solenoid;
 
      public FourbarSubsystem() {
-         m_doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2); //Set later
-         m_compressor = new Compressor(PneumaticsModuleType.REVPH);
-     }
-
-     public void setSolenoid(DoubleSolenoid.Value setValue) {
-         m_doubleSolenoid.set(setValue);
-     }
+         m_Solenoid = new Solenoid(
+                PneumaticsConstants.kPCMID, 
+                PneumaticsModuleType.CTREPCM, 
+                PneumaticsConstants.kFourBarChannel);
+    }
     
-     public void toggleSolenid() {
-         m_doubleSolenoid.toggle();
-     }
+    public Command toggle() {
+        return runOnce( () -> {
+            m_Solenoid.toggle(); 
+    });
+    }
 
 }

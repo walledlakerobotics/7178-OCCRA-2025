@@ -4,16 +4,20 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsControlModule;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.subsystems.ClawSubsystem;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.FourbarSubsystem;
-import frc.robot.subsystems.MecanumDriveSubsystem;
-import frc.robot.subsystems.PusherSubsystem;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.subsystems.ElevatorSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,18 +28,23 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final MecanumDriveSubsystem m_MecanumSubsystem = new MecanumDriveSubsystem();
+  private final DriveTrain m_MecanumSubsystem = new DriveTrain();
   private final FourbarSubsystem m_FourbarSubsystem = new FourbarSubsystem();
-  private final PusherSubsystem m_PusherSubsystem = new PusherSubsystem();
+  private final ClawSubsystem m_ClawSubsystem = new ClawSubsystem();
+  public final Compressor m_Compressor = new Compressor(30, PneumaticsModuleType.CTREPCM);
+  private final ElevatorSubsystem m_Elevator = new ElevatorSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  // private final CommandXboxController m_codriverController =
+  //     new CommandXboxController(1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    m_Compressor.enableDigital();
   }
 
   /**
@@ -54,19 +63,38 @@ public class RobotContainer {
       new InstantCommand(() -> m_FourbarSubsystem.setSolenoid(Value.kForward))
     );
     */
-    // m_driverController.a().onTrue(new InstantCommand(() -> m_FourbarSubsystem.toggleSolenid()));
 
     // m_driverController.x().onTrue(new InstantCommand(() -> m_PusherSubsystem.ejectBlock()));
 
+
+    m_Elevator.setDefaultCommand(
+      m_Elevator.elevatorManualCommand(
+          m_driverController::getRightY
+        )
+    );
+
+    m_driverController.a().onTrue(
+      m_ClawSubsystem.toggle()
+    );
+
+    m_driverController.b().onTrue(
+      m_FourbarSubsystem.toggle()
+    );
+
     m_MecanumSubsystem.setDefaultCommand(
-        m_MecanumSubsystem.mecanumDrive(
+        m_MecanumSubsystem.driveJoysticks(
             m_driverController::getLeftY, 
             m_driverController::getLeftX, 
             m_driverController::getRightX
         )
     );
+
+
+
+    
   }
 
+    
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

@@ -1,34 +1,27 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.PneumaticsConstants;
 
-public class ClawSubsystem {
-    private final DoubleSolenoid m_rotateForwardDoubleSolenoid;
-    private final DoubleSolenoid m_rotateBackwardDoubleSolenoid;
-    private final DoubleSolenoid m_clampDoubleSolenoid;
-    private final Compressor m_compressor;
+
+public class ClawSubsystem extends SubsystemBase {
+    private final Solenoid m_clampSolenoid;
 
     public ClawSubsystem() {
-        m_compressor = new Compressor(PneumaticsModuleType.REVPH);
-        m_rotateForwardDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
-        m_rotateBackwardDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
-        m_clampDoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
+        m_clampSolenoid = new Solenoid(
+                PneumaticsConstants.kPCMID, 
+                PneumaticsModuleType.CTREPCM, 
+                PneumaticsConstants.kClawChannel);
         //set later
     }
 
-    public void rotateForward() {
-        m_rotateBackwardDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
-        m_rotateForwardDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
-    }
+    public Command toggle() {
+        return runOnce( () -> {
+            m_clampSolenoid.toggle();
+    });
 
-    public void rotateBackward() {
-        m_rotateBackwardDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
-        m_rotateForwardDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
-    }
-
-    public void clampToggle() {
-        m_clampDoubleSolenoid.toggle();
     }
 }

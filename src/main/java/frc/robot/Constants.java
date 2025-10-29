@@ -6,6 +6,9 @@ package frc.robot;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.controllers.PathFollowingController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
+import edu.wpi.first.math.util.Units;
+
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 
@@ -33,43 +36,68 @@ public final class Constants {
     public static final int kBackLeftSparkID = 8;
     public static final int kBackRightSparkID = 6;
 
-    public static final double kForwardMaxSpeed = 5.6;
-    public static final double kStrafeMaxSpeed = 5.6;
-    public static final double kTurnMaxSpeed = 30;
+    public static final double kForwardMaxSpeed = 6.5;
+    public static final double kStrafeMaxSpeed = 2.5;
+    
+    public static final double kTurnMaxSpeed = 8;
+
+    public static final double kMaxAcceleration = 7;
 
     public static final double kWheelBaseLength = 0.508;
     public static final double kTrackWidth = 0.5842;
 
-    public static final boolean kRightMotorsInverted = false;
-    public static final boolean kLeftMotorsInverted = true;
+    public static final MecanumDriveKinematics kDriveKinematics = new MecanumDriveKinematics(
+      new Translation2d(kWheelBaseLength / 2, kTrackWidth / 2), 
+      new Translation2d(kWheelBaseLength / 2, -kTrackWidth / 2), 
+      new Translation2d(-kWheelBaseLength / 2, kTrackWidth / 2), 
+      new Translation2d(-kWheelBaseLength / 2, -kTrackWidth / 2));
 
-    public static final int kKVConstant = 473;
 
-    public static final double kPIDp = 0.05;
+    public static final boolean kRightMotorsInverted = true;
+    public static final boolean kLeftMotorsInverted = false;
+
+    public static final double kPIDp = 0.1;
     public static final double kPIDi = 0.00;
     public static final double kPIDd = 0.00;
 
-    public static final double kPosConvFactor = (0.1524 * Math.PI) / 12.75;
-    public static final double kVelConvFactor = kPosConvFactor / 60;
-
-    public static final double kMaxMperS = 5;
+    public static final double kPosConvFactor = ((Units.inchesToMeters(6) * Math.PI) / 8.451);
+    public static final double kVelConvFactor = kPosConvFactor / 60.0;
+    
     public static final int kSmartCurrentLimit = 30;
+
+    public static final double kXAxisSensitvity = 1;
+    public static final double kYAxisSensitvity = 1;
+    public static final double kRotationAxisSensitivity = 1;
+
+    public static final double kDeadband = 0.01;
       
   }
 
   public static class ElevatorConstants {
     public static final int kElevatorSparkID = 62;
-    public static final boolean kElevatorMotorInverted = false;
+    public static final boolean kElevatorMotorInverted = true;
 
-    public static final double kPIDp = 1;
-    public static final double kPIDi = 0;
-    public static final double kPIDd = 0;
+    public static final double kPIDp = 2.00;
+    public static final double kPIDi = 0.00;
+    public static final double kPIDd = 0.00;
 
-    public static final double kMaxVelocity = 2;
-    public static final double kMaxAcceleration = 2;
+    public static final double kPosConvFactor = 0.01;
+    public static final double kVelConvFactor = kPosConvFactor/60.0;
+
+    public static final double kMaxVelocity = 1.5;
+    public static final double kMaxAcceleration = 1.5;
 
     public static final double kElevatorVelocityFactor = 1;
     public static final double kElevatorManualControlDeadband = 0.01;
+  }
+
+  public static class PneumaticsConstants {
+
+    public static int kPCMID = 30;
+
+    public static int kClawChannel = 6;
+
+    public static int kFourBarChannel = 5;
   }
 
   public static class AutonConstants {
