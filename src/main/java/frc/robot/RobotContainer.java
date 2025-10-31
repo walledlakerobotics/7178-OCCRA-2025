@@ -4,9 +4,15 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -33,18 +39,26 @@ public class RobotContainer {
   private final ClawSubsystem m_ClawSubsystem = new ClawSubsystem();
   public final Compressor m_Compressor = new Compressor(30, PneumaticsModuleType.CTREPCM);
   private final ElevatorSubsystem m_Elevator = new ElevatorSubsystem();
+  private final ShuffleboardTab m_AutonTab = Shuffleboard.getTab("Auton");
+  private final SendableChooser<Command> m_AutonChooser = AutoBuilder.buildAutoChooser();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  // private final CommandXboxController m_codriverController =
-  //     new CommandXboxController(1);
+  private final CommandXboxController m_codriverController =
+      new CommandXboxController(1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
     m_Compressor.enableDigital();
+    m_AutonTab.add(m_AutonChooser);
+  }
+
+  public void configureNamedCommands() {
+    NamedCommands.registerCommand("fourbarToggle", m_FourbarSubsystem.toggle());
+    NamedCommands.registerCommand("clawToggle", m_ClawSubsystem.toggle());
   }
 
   /**
@@ -69,15 +83,15 @@ public class RobotContainer {
 
     m_Elevator.setDefaultCommand(
       m_Elevator.elevatorManualCommand(
-          m_driverController::getRightY
+          m_codriverController::getLeftY
         )
     );
 
-    m_driverController.a().onTrue(
+    m_codriverController.a().onTrue(
       m_ClawSubsystem.toggle()
     );
 
-    m_driverController.b().onTrue(
+    m_codriverController.b().onTrue(
       m_FourbarSubsystem.toggle()
     );
 
@@ -88,10 +102,6 @@ public class RobotContainer {
             m_driverController::getRightX
         )
     );
-
-
-
-    
   }
 
     
@@ -102,6 +112,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return m_AutonChooser.getSelected();
   }
 }

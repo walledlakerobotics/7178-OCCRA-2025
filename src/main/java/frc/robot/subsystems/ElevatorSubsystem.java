@@ -76,11 +76,11 @@ public class ElevatorSubsystem extends SubsystemBase {
         () -> {
             double velocity = MathUtil.applyDeadband(
                 -velocitySupplier.getAsDouble() , ElevatorConstants.kElevatorManualControlDeadband);
+  
 
             elevatorVelocityControl(velocity);
             SmartDashboard.putNumber("Elevator Input", velocity);
             SmartDashboard.putNumber("Elevator Vel", m_ElevatorEncoder.getVelocity());
-            SmartDashboard.putNumber("Elevator Pos", m_ElevatorEncoder.getPosition());
             
         });
   }

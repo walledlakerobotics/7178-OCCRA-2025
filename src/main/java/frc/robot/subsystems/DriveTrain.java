@@ -61,7 +61,7 @@ public class DriveTrain extends SubsystemBase {
     private final SparkClosedLoopController m_rearRightClosedLoop;
 
     // gyro
-    private final AHRS m_gyro = new AHRS(NavXComType.kMXP_SPI);
+    private final AHRS m_gyro;
 
     // calculates odometry
     private final MecanumDriveOdometry m_odometry;
@@ -82,6 +82,7 @@ public class DriveTrain extends SubsystemBase {
      */
     public DriveTrain() {
         SparkMaxConfig config = new SparkMaxConfig();
+        m_gyro = new AHRS(NavXComType.kMXP_SPI);
 
         // sets the idle mode, the smart current limit, and the inversion
         config
@@ -134,7 +135,7 @@ public class DriveTrain extends SubsystemBase {
 
         m_driveTab.add("Field", m_field);
 
-        AutoBuilder.configure(m_odometry::getPoseMeters, this::resetOdometry, this::getChassisSpeeds,
+        AutoBuilder.configure(m_odometry::getPoseMeters, (Pose2d newPose2d) -> resetOdometry(newPose2d), this::getChassisSpeeds,
                 this::drive, AutonConstants.kPathFollowingController, AutonConstants.kRobotConfig, () -> false, this);
         
         m_driveTab.addNumber("NavX Bearing", m_gyro::getAngle);

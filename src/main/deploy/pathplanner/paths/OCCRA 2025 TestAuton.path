@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 4.0,
-        "y": 6.0
+        "x": 2.0,
+        "y": 4.982619044952331
       },
       "prevControl": {
-        "x": 4.008554601310897,
-        "y": 4.791979707580243
+        "x": 0.791949418235518,
+        "y": 4.982619044952331
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,19 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "clawToggle",
+      "waypointRelativePos": 0.9928966061562708,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "clawToggle"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 4.0,
