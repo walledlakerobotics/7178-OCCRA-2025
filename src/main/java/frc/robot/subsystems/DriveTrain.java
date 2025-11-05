@@ -135,8 +135,8 @@ public class DriveTrain extends SubsystemBase {
         m_driveTab.addNumber("Robot Heading (deg)", () -> m_odometry.getPoseMeters().getRotation().getDegrees());
 
         m_driveTab.add("Field", m_field);
-
-        AutoBuilder.configure(m_odometry::getPoseMeters, (Pose2d newPose2d) -> resetOdometry(newPose2d), this::getChassisSpeeds,
+//(Pose2d newPose2d) -> resetOdometry(newPose2d)
+        AutoBuilder.configure(m_odometry::getPoseMeters, this::resetOdometry, this::getChassisSpeeds,
                 this::drive, AutonConstants.kPathFollowingController, AutonConstants.kRobotConfig, () -> false, this);
         
         m_driveTab.addNumber("NavX Bearing", m_gyro::getAngle);

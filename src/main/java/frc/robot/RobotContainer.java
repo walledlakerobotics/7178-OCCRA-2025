@@ -112,6 +112,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_MecanumSubsystem.driveForwardSeconds(1.0);
+    return m_AutonChooser.getSelected();
   }
 }

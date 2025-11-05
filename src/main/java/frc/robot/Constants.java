@@ -36,12 +36,12 @@ public final class Constants {
     public static final int kBackLeftSparkID = 8;
     public static final int kBackRightSparkID = 6;
 
-    public static final double kForwardMaxSpeed = 6.5;
-    public static final double kStrafeMaxSpeed = 2.5;
+    public static final double kForwardMaxSpeed = 7.0;
+    public static final double kStrafeMaxSpeed = 3.5;
     
     public static final double kTurnMaxSpeed = 8;
 
-    public static final double kMaxAcceleration = 7;
+    public static final double kMaxAcceleration = 9;
 
     public static final double kWheelBaseLength = 0.508;
     public static final double kTrackWidth = 0.5842;
@@ -56,7 +56,7 @@ public final class Constants {
     public static final boolean kRightMotorsInverted = true;
     public static final boolean kLeftMotorsInverted = false;
 
-    public static final double kPIDp = 0.1;
+    public static final double kPIDp = 0.2;
     public static final double kPIDi = 0.00;
     public static final double kPIDd = 0.00;
 
