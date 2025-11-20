@@ -62,7 +62,7 @@ public class DriveTrain extends SubsystemBase {
     private final SparkClosedLoopController m_rearRightClosedLoop;
 
     // gyro
-    private final AHRS m_gyro;
+    private final AHRS m_gyro = new AHRS(NavXComType.kUSB1);
 
     // calculates odometry
     private final MecanumDriveOdometry m_odometry;
@@ -78,12 +78,13 @@ public class DriveTrain extends SubsystemBase {
 
     private ShuffleboardTab m_driveTab = Shuffleboard.getTab(getName());
 
+
     /**
      * Constructs a {@link DriveTrain}.
      */
     public DriveTrain() {
         SparkMaxConfig config = new SparkMaxConfig();
-        m_gyro = new AHRS(NavXComType.kMXP_SPI);
+        
 
         // sets the idle mode, the smart current limit, and the inversion
         config
@@ -132,7 +133,9 @@ public class DriveTrain extends SubsystemBase {
 
         m_driveTab.addNumber("Robot X (m)", () -> m_odometry.getPoseMeters().getX());
         m_driveTab.addNumber("Robot Y (m)", () -> m_odometry.getPoseMeters().getY());
-        m_driveTab.addNumber("Robot Heading (deg)", () -> m_odometry.getPoseMeters().getRotation().getDegrees());
+        m_driveTab.addNumber("Robot Heading (deg)", () -> m_gyro.getRotation2d().getDegrees());
+        m_driveTab.addBoolean("NavXOn", () -> m_gyro.isConnected());
+        m_driveTab.addNumber("NavX_VelX", () -> m_gyro.getVelocityX());
 
         m_driveTab.add("Field", m_field);
 //(Pose2d newPose2d) -> resetOdometry(newPose2d)
@@ -152,7 +155,7 @@ public class DriveTrain extends SubsystemBase {
      * @param zRotation The normalized curvature [-1, 1].
      *                  Counterclockwise is positive.
      */
-    public void drive(double xSpeed, double ySpeed, double zRotation) {
+    public void drive(double xSpeed, double ySpeed, double zRotation, boolean fieldRelative) {
         xSpeed *= MecanumDriveConstants.kForwardMaxSpeed;
         ySpeed *= MecanumDriveConstants.kStrafeMaxSpeed;
         zRotation *= MecanumDriveConstants.kTurnMaxSpeed;
@@ -164,8 +167,14 @@ public class DriveTrain extends SubsystemBase {
         // zRotation = m_rotationController.calculate(m_gyro.getRotation2d().getRadians(),
         //         m_rotationSetpoint.getRadians());
 
-        drive(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, zRotation,
-                m_gyro.getRotation2d().minus(m_fieldRelativeOffset)));
+        ChassisSpeeds speeds = new ChassisSpeeds(xSpeed, ySpeed, zRotation);
+
+        if (fieldRelative) {
+            speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds,
+            m_gyro.getRotation2d().minus(m_fieldRelativeOffset));
+        }
+
+        drive(speeds);
     }
 
     /**
@@ -213,18 +222,8 @@ public class DriveTrain extends SubsystemBase {
             ySpeed = MathUtil.applyDeadband(ySpeed, MecanumDriveConstants.kDeadband);
             zRotation = MathUtil.applyDeadband(zRotation, MecanumDriveConstants.kDeadband);
 
-            drive(xSpeed, ySpeed, zRotation);
+            drive(xSpeed, ySpeed, zRotation, false);
         });
-    }
-
-    public Command driveForwardSeconds(double seconds) {
-        return runOnce(() -> {
-            drive(2,0,0);
-        }).andThen(Commands.waitSeconds(seconds)).andThen(
-            runOnce(() -> {
-                drive(0,0,0);
-            })
-        );
     }
 
     /**

@@ -69,7 +69,7 @@ public final class Constants {
     public static final double kYAxisSensitvity = 1;
     public static final double kRotationAxisSensitivity = 1;
 
-    public static final double kDeadband = 0.01;
+    public static final double kDeadband = 0.05;
       
   }
 
@@ -101,8 +101,8 @@ public final class Constants {
   }
 
   public static class AutonConstants {
-    public static final PIDConstants kPIDConstantsTranslation =  new PIDConstants(1,0,0);
-    public static final PIDConstants kPIDConstantsRotation =  new PIDConstants(1,0,0);
+    public static final PIDConstants kPIDConstantsTranslation =  new PIDConstants(3.5,0.0,0.0);
+    public static final PIDConstants kPIDConstantsRotation =  new PIDConstants(4.3,0.0,0.0);
     public static final PathFollowingController kPathFollowingController = new PPHolonomicDriveController(kPIDConstantsTranslation, kPIDConstantsRotation);
     public static final RobotConfig kRobotConfig;
 

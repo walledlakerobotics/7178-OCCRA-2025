@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsControlModule;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
@@ -40,7 +42,7 @@ public class RobotContainer {
   public final Compressor m_Compressor = new Compressor(30, PneumaticsModuleType.CTREPCM);
   private final ElevatorSubsystem m_Elevator = new ElevatorSubsystem();
   private final ShuffleboardTab m_AutonTab = Shuffleboard.getTab("Auton");
-  private final SendableChooser<Command> m_AutonChooser = AutoBuilder.buildAutoChooser();
+  private final SendableChooser<Command> m_AutonChooser;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -50,9 +52,18 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
     configureBindings();
+    configureNamedCommands();
     m_Compressor.enableDigital();
+
+    m_AutonChooser = new SendableChooser<>();
+
+    m_AutonChooser.setDefaultOption("None", Commands.none());
+    m_AutonChooser.addOption("Left", new PathPlannerAuto("LeftAuton"));
+    m_AutonChooser.addOption("Right" , new PathPlannerAuto("LeftAuton", true));
+    m_AutonChooser.addOption("TuneStraight", new PathPlannerAuto("Straight Tuning"));
+    m_AutonChooser.addOption("TuneGay", new PathPlannerAuto("Gay Tuning"));
+
     m_AutonTab.add(m_AutonChooser);
   }
 
