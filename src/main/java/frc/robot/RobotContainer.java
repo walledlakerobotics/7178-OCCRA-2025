@@ -4,12 +4,9 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PneumaticsControlModule;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -19,12 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.FourbarSubsystem;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.ElevatorSubsystem;
 
 /**
@@ -35,10 +27,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveTrain m_MecanumSubsystem = new DriveTrain();
-  private final FourbarSubsystem m_FourbarSubsystem = new FourbarSubsystem();
-  private final ClawSubsystem m_ClawSubsystem = new ClawSubsystem();
   public final Compressor m_Compressor = new Compressor(30, PneumaticsModuleType.CTREPCM);
   private final ElevatorSubsystem m_Elevator = new ElevatorSubsystem();
   private final ShuffleboardTab m_AutonTab = Shuffleboard.getTab("Auton");
@@ -68,8 +57,6 @@ public class RobotContainer {
   }
 
   public void configureNamedCommands() {
-    NamedCommands.registerCommand("fourbarToggle", m_FourbarSubsystem.toggle());
-    NamedCommands.registerCommand("clawToggle", m_ClawSubsystem.toggle());
   }
 
   /**
@@ -96,14 +83,6 @@ public class RobotContainer {
       m_Elevator.elevatorManualCommand(
           m_codriverController::getLeftY
         )
-    );
-
-    m_codriverController.a().onTrue(
-      m_ClawSubsystem.toggle()
-    );
-
-    m_codriverController.b().onTrue(
-      m_FourbarSubsystem.toggle()
     );
 
     m_MecanumSubsystem.setDefaultCommand(

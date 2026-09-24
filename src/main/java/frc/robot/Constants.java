@@ -91,15 +91,6 @@ public final class Constants {
     public static final double kElevatorManualControlDeadband = 0.01;
   }
 
-  public static class PneumaticsConstants {
-
-    public static int kPCMID = 30;
-
-    public static int kClawChannel = 6;
-
-    public static int kFourBarChannel = 5;
-  }
-
   public static class AutonConstants {
     public static final PIDConstants kPIDConstantsTranslation =  new PIDConstants(3.5,0.0,0.0);
     public static final PIDConstants kPIDConstantsRotation =  new PIDConstants(4.3,0.0,0.0);
